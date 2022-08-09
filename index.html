@@ -1,0 +1,108 @@
+<!--WEB 330 - Enterprise JavaScript II
+Student: Thomas Schultz
+Instructor: Richard Krasso
+This is the landing page for the course
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB 330 - Enterprise JavaScript II</title>
+    <link rel="stylesheet" href="site.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="light-theme">
+    <i onclick="toggleMode(this)" id="icon-mode" class="fa fa-toggle-off pull-right" style="font-size: 28px;"><span
+            id="icon-text"></span></i>
+    <br>
+    <div id="container">
+        <h1>Thomas Schultz's Landing Page</h1>
+        <h2>WEB 330 Enterprise JavaScript II</h2>
+        <hr>
+        <h3>Weekly Assignments</h3>
+        <ul>
+            <li><a href="">Assignment 2.2</a></li>
+            <li><a href="">Assignment 2.3</a></li>
+            <li><a href="">Assignment 3.2</a></li>
+            <li><a href="">Assignment 4.2</a></li>
+            <li><a href="">Assignment 5.2</a></li>
+            <li><a href="">Assignment 6.2</a></li>
+            <li><a href="">Assignment 7.2</a></li>
+            <li><a href="">Assignment 8.2</a></li>
+        </ul>
+        <h3>Projects</h3>
+        <ul>
+            <li><a href="">Personal Portfolio</a></li>
+            <li><a href="">WEB 231's Landing Page</a></li>
+        </ul>
+        <h4>Important Links</h4>
+        <ul>
+            <li><a href="https://validator.w3.org/">W3C HTML Validator</a></li>
+            <li><a href="http://jigsaw.w3.org/css-validator/">W3C CSS Validator</a></li>
+            <li><a href="https://www.w3schools.com/html/">HTML Tutorial</a></li>
+            <li><a href="https://www.w3schools.com/js/js_best_practices.asp">JavaScript Best Practices</a></li>
+            <li><a href="https://github.com/buwebdev/web-231">WEB 231's GitHub Repository</a></li>
+            <li><a href="https://bruinconnect.bellevue.edu/">Bruin Connect</a></li>
+        </ul>
+    </div>
+
+    <script>
+        /** setdefaultTheme **/
+        setDefaultTheme();
+        function toggleMode(x) {
+            let colorTheme = document.body.classList; // get the body's CSS class
+            let iconMode = x.classList; // get the current classes assigned to the triggered button
+
+            /**
+             * If the current body class is set to the light-theme, update the user's preference to the dark-theme in the browsers
+             * local storage.
+             */
+            if (colorTheme.value === "light-theme") {
+                localStorage.clear();
+                localStorage.setItem("mode", "dark-theme");
+                localStorage.setItem("iconMode", "fa-toggle-on");
+                localStorage.setItem("iconText", "Dark Mode");
+            }
+            /**
+             * If the current body class is set to the dark-theme, update the user's preference to the light-theme in the browsers
+             * local storage.
+             */
+            else {
+                localStorage.clear();
+                localStorage.setItem("mode", "light-theme");
+                localStorage.setItem("iconMode", "fa-toggle-off");
+                localStorage.setItem("iconText", "Light Mode");
+            }
+
+            /**
+             * Apply the updated selection to the HTML page elements
+             */
+            colorTheme.value = localStorage.getItem("mode");
+            iconMode.value = `fa ${localStorage.getItem("iconMode")} pull-right`;
+            document.getElementById("icon-text").innerHTML = localStorage.getItem("iconText");
+        }
+
+        function setDefaultTheme() {
+            // Variables are looking at local storage to determine theme
+            const theme = localStorage.getItem("colorTheme") || "light-theme";
+            const iconMode = localStorage.getItem("iconMode") || "fa-toggle-off";
+            const iconText = localStorage.getItem("iconText") || "Light Mode";
+
+            // Setting theme, iconMode, and iconText based on browser storage
+            document.body.classList.value = theme;
+            document.getElementById("icon-mode").classList.add(iconMode);
+            document.getElementById("icon-text").innerHTML = iconText;
+        }
+    </script>
+</body>
+
+</html>

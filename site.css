@@ -1,0 +1,128 @@
+/**WEB 330 - Enterprise JavaScript II
+Student: Thomas Schultz
+Instructor: Richard Krasso
+site.css file
+**/
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+/* Setting the body font. */
+body {
+    font-family: Oswald;
+}
+
+#container {
+    margin-top: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+#icon-mode:hover {
+    cursor: pointer;
+}
+
+#icon-text {
+    padding-left: 10px;
+}
+
+.pull-right {
+    float: right;
+}
+
+
+/* 
+    Styling the body
+*/
+
+body {
+    color: var(--text-color);
+    background-color: var(--background-color);
+    font-family: 'Oswald', Verdana, Arial, sans-serif;
+}
+
+
+/* 
+    Styling anchor tag
+*/
+
+a {
+    color: var(--anchor-color);
+    text-decoration: none;
+}
+
+
+/* 
+    Anchor styling onhover, this will set JS variable based on the theme
+*/
+
+a:hover {
+    background-color: var(--anchor-hover-background-color);
+    color: var(--anchor-hover-color);
+}
+
+
+/* 
+    H1 styles that change based on theme
+*/
+
+h1 {
+    color: var(--heading-color);
+    background-color: var(--h1-background-color);
+    padding: 10px;
+    border: solid 1px var(--h1-border-color);
+}
+
+
+/* 
+    Header styles that changes based on theme
+*/
+
+h2,
+h3,
+h4 {
+    color: var(--heading-color);
+    background-color: var(--heading-background-color);
+    padding: 10px;
+    border: solid 1px var(--heading-border-color);
+}
+
+/* Styling for tables */
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+
+    margin-bottom: 30px;
+}
+
+/* Styling for table headers */
+
+.table th {
+    border: 1px solid #ddd;
+    padding-top: 12px;
+    padding-left: 6px;
+    padding-bottom: 12px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: var(--table-header-background-color);
+    text-align: left;
+    color: var(--table-header-color);
+
+}
+
+/* Styling for table data & header */
+
+.table td,
+th {
+    border: 1px solid #ddd;
+    border-color: var(--table-border-color);
+    padding: 8px;
+}
+
+.table tr:hover {
+
+    background-color: var(--table-hover-background-color);
+    color: var(--table-hover-color);
+    cursor: pointer;
+}
