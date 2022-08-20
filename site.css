@@ -12,9 +12,11 @@ body {
 }
 
 #container {
-    margin-top: 50px;
-    margin-left: 100px;
-    margin-right: 100px;
+    max-width: 720px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 #icon-mode:hover {
@@ -125,4 +127,14 @@ th {
     background-color: var(--table-hover-background-color);
     color: var(--table-hover-color);
     cursor: pointer;
+}
+
+.app-header {
+    font-size: 28px;
+    text-align: center;
+}
+
+#palindrome-results {
+    text-align: center;
+    font-size: 28px;
 }

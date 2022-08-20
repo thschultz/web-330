@@ -1,0 +1,135 @@
+<!--Web 330 - Enterprise JavaScript II
+Student: Thomas Schultz
+Instructor: Richard Krasso
+Sources: 
+-->
+
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../theme.css" type="text/css">
+    <link rel="stylesheet" href="../site.css" type="text/css">
+
+    <link rel="stylesheet" href="haefner-palindrome.css" type="text/css">
+
+    <title>WEB 231 – Enterprise JavaScript II</title>
+</head>
+
+<body class="light-theme">
+    <div id="container">
+        <div class="app-header">
+            Welcome to the Palindrome App!
+        </div>
+        <div class="card">
+            <div class="card-title">Palindrome Checker</div>
+            <div class="card-content">
+                <div class="form">
+                    <div class="form-field">
+                        <label>Phrase Value:</label>
+                        <input type="text" id="txtPhrase" class="input">
+                    </div>
+                    <div class="form-field">
+                        <button id="btnCheckPhrase" class="btn btn-primary full-width"
+                            onclick="checkForPalindrome()">Check Phrase</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Link to return back to the index.html page. -->
+        <a class="return-home" href="../index.html">Return</a>
+
+        <!--Card to display results-->
+        <div id="results-container">
+            <div class="card">
+                <div class="card-title">Palindrome Results</div>
+                <div class="card-content" id="assign-results-header"></div>
+                <div class="card-content" id="palindrome-results"></div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <script>
+
+        function getTodaysDate() {
+            return date = new Date().toLocaleDateString("en-US");
+        }
+
+
+        function getLength(stringValue) {
+            let lengthOfString = stringValue.length;
+            return lengthOfString;
+        }
+
+
+        function reverse(stringValue) {
+            let res = stringValue.split("");
+            let newString = res.reverse();
+            let combinedString = newString.join("");
+            return combinedString.toLowerCase();
+
+        }
+
+        function isPalindrome(stringValue) {
+
+            //Creating an empty results variable.
+            let result = "";
+
+            //If the reversed string is equal to itself, it will display a result based on
+            //that.
+            if (stringValue === reverse(stringValue)) {
+
+                //Template literals enclosed with the backtick `. Important to not get it mixed
+                //up with ''.
+                result = `${stringValue} is a palindrome!`;
+
+            } else {
+
+                result = `${stringValue} is not a palindrome!`;
+
+            }
+
+            document.getElementById("palindrome-results").innerHTML = result;
+
+        }
+
+
+        function checkForPalindrome() {
+
+            //Capturing inputted results and putting into variable txtPhrase.
+            let txtPhrase = document.getElementById('txtPhrase').value.toLowerCase();
+
+            //Create a variable today and assign it results from getTodaysDate function.
+            let today = getTodaysDate();
+
+            //Putting the length of what the user entered into the variable len.
+            let len = getLength(txtPhrase);
+
+            //Putting the reversed input into the variable reversedPhrase.
+            let reversedPhrase = reverse(txtPhrase);
+
+            //What will display to the user, based on what they entered into the field.
+            let header = "Date: " + today + "<br>" + "Original Phrase: " + txtPhrase + "<br>" +
+                "Reversed Phrase: " + reversedPhrase + "<br>" + "Phrase Length: " + len;
+
+            //Assigning the header variable to the assign-results-header div.         
+            document.getElementById("assign-results-header").innerHTML = header;
+
+
+
+            isPalindrome(txtPhrase);
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
