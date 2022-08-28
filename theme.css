@@ -68,6 +68,8 @@ i {
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 20%);
     transition: 0.3s;
     background-color: var(--card-background-color);
+    width: 600px;
+    margin: 3% auto 0;
 }
 
 .card-content {
