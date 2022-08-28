@@ -8,7 +8,6 @@ body {
     grid-template-columns: auto auto;
 }
 
-.grid-item {}
 
 .card-mini {
     background-color: var(--card-background-color);
