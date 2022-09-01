@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../theme.css" type="text/css">
+    <link rel="stylesheet" href="../site.css" type="text/css">
+    <link rel="stylesheet" href="schultz-calorie.css" type="text/css">
+    <title>WEB 330 – Enterprise JavaScript I</title>
+</head>
+
+<body class="light-theme">
+    <i onclick="toggleMode(this)" id="icon-mode" class="fa fa-toggle-off pull-right" style="font-size: 28px;"><span
+            id="icon-text"></span></i>
+    <br>
+    <div id="container">
+        <div class="app-header">Welcome to the Calorie App!</div>
+        <div class="card">
+            <div class="card-title">Calorie Search Form</div>
+            <div class="card-content">
+                <div class="form">
+                    <div class="form-field">
+                        <label>Enter a food item:</label>
+                        <input type="text" id="txtFoodItem" class="input">
+                        <span id="foodList"></span>
+                    </div>
+                    <div class="form-field">
+                        <button id="btnSearch" class="btn btn-primary full-width" onclick="">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- Link to return back to the index.html page. -->
+        <a class="return-home" href="../index.html">Return</a>
+        <!--Card to display results-->
+        <div id="results-container">
+            <div class="card">
+                <div class="card-title">Search Results</div>
+                <div class="card-content" id="searchResults"></div>
+                <br>
+            </div>
+        </div>
+        <script type="javascript" src="../theme.js"></script>
+        <script type="module">
+
+            import {
+                CalorieConverter
+            } from "./calorie-converter.js";
+
+            //Creating variable and assigning it the txtFoodItem input field.
+            let txtFoodItemEl = document.getElementById('txtFoodItem');
+
+            document.getElementById("btnSearch").onclick = function () {
+
+                //Assigning the variable the input value.
+                let txtFoodItem = txtFoodItemEl.value;
+
+                let foods = CalorieConverter.find(txtFoodItem);
+
+                let tableData = `<table class="table">
+        <tr><th>Name</th><th>Calories</th></tr>
+        `;
+                for (let foodName of foods) {
+                    //Create a table row.
+                    tableData += `<tr><td>${foodName.name}</td><td>${foodName.calories}</td></tr>
+                    `;
+                }
+                // Closing tags for table elements.
+                tableData += "</table>";
+
+                // Once user inputs item and click button/hits enter; result binds to resultsTable element.
+                document.getElementById("searchResults").innerHTML = tableData;
+            }
+
+            //An event listener for keyup.
+            document.addEventListener("keyup", function (event) {
+
+                //If the user presses the enter key
+                if (event.keyCode == 13) {
+
+                    //Simulate clicking the search button.
+                    document.getElementById("btnSearch").click();
+
+                }
+            });
+
+            //Creating variable foodList and calling static data field.
+            let foodList = CalorieConverter.data;
+
+            //Building an HTML <i> string.
+            let foodListData = "<i>(Ex: ";
+
+            for (const food of foodList) {
+                //Appending food names to variable string.
+                foodListData += `${food.name}, `;
+            }
+
+            foodListData = `${foodListData.slice(0, -2)})</i>`;
+
+            document.getElementById("foodList").innerHTML = foodListData;
+        </script>
+
+        <script>
+            /** setdefaultTheme **/
+            setDefaultTheme();
+            function toggleMode(x) {
+                let colorTheme = document.body.classList; // get the body's CSS class
+                let iconMode = x.classList; // get the current classes assigned to the triggered button
+
+                /**
+                * If the current body class is set to the light-theme, update the user's preference to the dark-theme in the
+                browsers
+                * local storage.
+                */
+                if (colorTheme.value === "light-theme") {
+                    localStorage.clear();
+                    localStorage.setItem("mode", "dark-theme");
+                    localStorage.setItem("iconMode", "fa-toggle-on");
+                    localStorage.setItem("iconText", "Dark Mode");
+                }
+                /**
+                * If the current body class is set to the dark-theme, update the user's preference to the light-theme in the
+                browsers
+                * local storage.
+                */
+                else {
+                    localStorage.clear();
+                    localStorage.setItem("mode", "light-theme");
+                    localStorage.setItem("iconMode", "fa-toggle-off");
+                    localStorage.setItem("iconText", "Light Mode");
+                }
+
+                /**
+                * Apply the updated selection to the HTML page elements
+                */
+                colorTheme.value = localStorage.getItem("mode");
+                iconMode.value = `fa ${localStorage.getItem("iconMode")} pull-right`;
+                document.getElementById("icon-text").innerHTML = localStorage.getItem("iconText");
+            }
+
+            function setDefaultTheme() {
+                // Variables are looking at local storage to determine theme
+                const theme = localStorage.getItem("colorTheme") || "light-theme";
+                const iconMode = localStorage.getItem("iconMode") || "fa-toggle-off";
+                const iconText = localStorage.getItem("iconText") || "Light Mode";
+
+                // Setting theme, iconMode, and iconText based on browser storage
+                document.body.classList.value = theme;
+                document.getElementById("icon-mode").classList.add(iconMode);
+                document.getElementById("icon-text").innerHTML = iconText;
+            }
+        </script>
+</body>
+
+</html>

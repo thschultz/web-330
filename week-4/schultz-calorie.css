@@ -1,0 +1,12 @@
+/** 
+Styling for food list 
+**/
+
+#foodList {
+
+    float: right;
+    color: #df546a;
+    font-size: 12px;
+    letter-spacing: 2px;
+
+}

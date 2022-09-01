@@ -92,8 +92,6 @@ h4 {
 
 .table {
     border-collapse: collapse;
-    width: 100%;
-
     margin-bottom: 30px;
 }
 
@@ -137,4 +135,8 @@ th {
 #palindrome-results {
     text-align: center;
     font-size: 28px;
+}
+
+.return-home {
+    margin-left: 63px;
 }
