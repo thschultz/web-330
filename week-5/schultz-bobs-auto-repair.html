@@ -34,9 +34,9 @@ Sources:
             <div class="card-content">
                 <div class="form">
                     <div class="form-field">
-                        <label>Choose a product:</label>
+                        <label for="products">Choose a product:</label>
                         <select name="products" id="productList" class="drop-down-menu">
-                            <option value="select">--Select--</option>
+                            <option value="--Select--">--Select--</option>
                             <option value="19.99">Oil Change</option>
                             <option value="18.44">Filter Replacement</option>
                             <option value="9.99">Wiper Fluid Refill</option>
@@ -124,22 +124,26 @@ Sources:
 
 
         //The event that runs when the user clicks the cart icon
+        //On click function for cart icon.
         document.getElementById("cartIcon").onclick = function () {
+            //Create HTML table.
+            let cartDisplayTable = `
+      <table class="table">
+        <tr><th>ID</th><th>Name</th><th>Price</th></tr>
+            `;
 
-            // Creating variable cartDisplayTable 
-            let cartDisplayTable = document.querySelector("#shopping-table tbody");
-
-            let rows = "";
-
-
-
-            for (let product of shoppingCart) {
-
-                rows += ` <tr> <td>${product.id}</td> <td>${product.name}</td> <td>${product.price}</td> </tr> `;
+            for (let _products of shoppingCart) {
+                cartDisplayTable += `
+                    <tr>
+                        <td>${_products.id}</td>
+                        <td>${_products.name}</td>
+                        <td>${_products.price}</td>
+                    </tr>`
             }
-
-            //Changing the HTML content
-            cartDisplayTable.innerHTML = rows;
+            //close table.
+            cartDisplayTable += `</table>`
+            //Bind cartDisplayTable to shopping cart card content.
+            document.getElementById('shoppingCart').innerHTML = cartDisplayTable;
         }
     </script>
     <script>
