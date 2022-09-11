@@ -1,0 +1,22 @@
+#cartMessage {
+
+    float: right;
+    color: #df546a;
+    font-size: 12px;
+    letter-spacing: 2px;
+
+}
+
+/** Setting the cursor to a pointer on hover */
+i:hover {
+
+    cursor: pointer;
+
+}
+
+#cartIcon {
+
+    margin-left: 200px;
+    color: var(--card-title-color);
+
+}
