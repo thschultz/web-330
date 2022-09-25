@@ -1,0 +1,138 @@
+<!--Web 330 - Enterprise JavaScript II
+Student: Thomas Schultz
+Instructor: Richard Krasso
+Sources:
+https://www.w3schools.com/js/js_api_fetch.asp
+https://www.w3schools.com/xml/xml_parser.asp
+https://www.w3schools.com/xml/xml_validator.asp
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../theme.css" type="text/css">
+    <link rel="stylesheet" href="../site.css" type="text/css">
+    <title>WEB 330 – Enterprise JavaScript II</title>
+</head>
+
+<body class="light-theme">
+    <div id="container">
+        <div class="app-header">Welcome to the WhatABook, Part 1 App!</div>
+        <div class="card">
+            <div class="card-title">Book Listing</div>
+            <div class="card-content" id="bookList"></div>
+        </div>
+        <br />
+        <div>
+            <a class="return-home" href="../index.html">Return</a>
+        </div>
+        <div class="card">
+            <div class="card-title">Selected Book</div>
+            <div class="card-content" id="selectedBook"></div>
+        </div>
+    </div>
+    <script>
+        setSelectedTheme();
+    </script>
+    <script>
+        //An event listener for DOMContentLoaded
+        window.addEventListener("DOMContentLoaded", function (event) {
+
+            //Create variable fileName and assign it the string value of books.xml.
+            let fileName = "books.xml";
+
+            //Javascript fetch function.
+            fetch(fileName)
+                .then(res => res.text())
+                .then(data => {
+
+                    let domParser = new DOMParser();
+                    let xmlBooks = domParser.parseFromString(data, "text/xml")
+
+                    //Call loadBooks function passing in xmlBooks variable.
+                    loadBooks(xmlBooks);
+
+                    addIsbnEvents();
+
+                })
+        });
+
+
+        //Create loadBooks function
+        function loadBooks(xml) {
+            //Create variable named books and assign it to the getElementsByTagName call.
+            let books = xml.getElementsByTagName("book");
+
+            //Create tableData variable.
+            let tableData = `
+      <table id="bookTable"  class="table">
+          <thead>
+              <th>ISBN</th>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Pages</th>
+              <th>Authors</th>
+          </thead>
+          <tbody>`;
+            //for..of statement iterating over xml information create with corresponding variable.
+            for (let book of books) {
+                let isbn = book.getElementsByTagName("isbn")[0].childNodes[0].nodeValue;
+                let title = book.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+                let description = book.getElementsByTagName("description")[0].childNodes[0].nodeValue;
+                let pages = book.getElementsByTagName("pages")[0].childNodes[0].nodeValue;
+                let authors = book.getElementsByTagName("authors")[0].childNodes[0].nodeValue;
+
+
+                //Creating tableData from the for of loop.
+                tableData += `<tr><td data-value="ISBN"><a href="#" class="isbn-link">${isbn}</a></td><td data-value="Title">
+  ${title}</td><td data-value="Description">${description}</td><td data-value="Pages">${pages}</td><td data-value=
+  "Authors">${authors}</td></tr>`
+            }
+
+            //Close table.
+            tableData += `</tbody></table>`
+            //Bind variable to bookList inner HTML/
+            document.getElementById('bookList').innerHTML = tableData;
+        }
+
+        //Create a function named anchorClicked() w/ parameter value of e.
+        function anchorClicked(e) {
+
+            e.preventDefault();
+
+            let self = this;
+            let cell = self.parentElement;
+            let row = cell.parentElement;
+
+            let data = row.querySelectorAll("td");
+
+            //Build HTML string for unordered list
+            let bookData = `<ul style="list-style-type:none;">`
+            for (let field of data) {
+                bookData += `<li><b>${field.dataset.value}: </b> ${field.innerText}</li>`
+            }
+
+            bookData += `</ul>` //Close unordered list.
+
+            //Bind bookData variable to selectedBook.innerHTML
+            document.getElementById("selectedBook").innerHTML = bookData;
+        }
+
+        //Function of add ISBN event on click for the isbn links in the table body.
+        function addIsbnEvents() {
+            const viewButtons = document.querySelectorAll("#bookTable tbody .isbn-link");
+
+            for (let index = 0; index < viewButtons.length; index++) {
+                viewButtons[index].addEventListener("click", anchorClicked);
+            }
+        }
+    </script>
+</body>
+
+</html>
