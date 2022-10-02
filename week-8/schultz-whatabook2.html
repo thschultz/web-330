@@ -1,0 +1,182 @@
+<!--Web 330 - Enterprise JavaScript II
+Student: Thomas Schultz
+Instructor: Richard Krasso
+Sources:
+https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../theme.css" type="text/css">
+    <link rel="stylesheet" href="../site.css" type="text/css">
+    <title>WEB 330 – Enterprise JavaScript II</title>
+</head>
+
+<body class="light-theme">
+    <div id="container">
+        <div class="app-header">Welcome to the WhatABook, Part 2 App!</div>
+        <div class="assign-content">
+            <div class="card">
+                <div class="card-title">Book Listing</div>
+                <div class="card-content" id="bookList"></div>
+            </div>
+            <div>
+                <a class="return-home" href="../index.html">Return</a>
+            </div>
+            <div id="calculationResults">
+                <div class="card">
+                    <div class="card-title">Selected Book</div>
+                    <div class="card-content" id="selectedBook"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        // Import HttpClient class from http-client.js
+        import { HttpClient } from './http-client.js';
+
+        // Create a new instance of the HttpClient class
+        let http = new HttpClient();
+
+        // array of books to display by ISBN
+        const isbns = [
+            '0345339681',
+            '0261103571',
+            '9780593099322',
+            '9780261102361',
+            '9780261102378',
+            '9780590302715',
+            '9780316769532',
+            '9780743273565',
+            '9780590405959'
+        ];
+
+        // Parameters to pass to the API
+        const params = {
+            bibkeys: `ISBN:${isbns.join(',')}`,
+            format: 'json',
+            jscmd: 'details'
+        };
+
+        // Call the get method on the HttpClient class
+        http.get('https://openlibrary.org/api/books', params)
+            .then((res) => {
+
+
+                document.getElementById('bookList').innerHTML = buildHtmlString(res, 'table');
+
+
+                addIsbnClickEvents();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+
+        function getBook(e) {
+            e.preventDefault();
+
+            let self = this;
+
+            let isbn = self.innerText;
+
+            const params = {
+                bibkeys: `ISBN:${isbn}`,
+                format: 'json',
+                jscmd: 'details'
+            };
+
+            http.get('https://openlibrary.org/api/books', params)
+                .then((res) => {
+                    // Build a list of book information
+                    document.getElementById('selectedBook').innerHTML = buildHtmlString(res, 'ul');
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        }
+
+        // Build a string of HTML from the API response
+        function buildHtmlString(res, format) {
+            let tableString = `<table id="bookTable" class="table">
+                                        <tr>
+                                            <th>ISBN</th>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Pages</th>
+                                            <th>Authors</th>
+                                        </tr>
+                                        <tbody>`;
+            let ulString = ``;
+
+            for (let key in res) {
+                // Start the List
+                ulString += `<ul style="list-style-type: none;">`;
+
+                if (res.hasOwnProperty(key)) {
+                    let authors = [];
+                    if (res[key].details.authors) {
+                        authors = res[key].details.authors.map((author => {
+                            return author.name;
+                        }));
+                    }
+
+                    // Build a table row for each book
+                    let book = {
+                        isbn: res[key].details.isbn_13 ? res[key].details.isbn_13 : res[key].details.isbn_10,
+                        title: res[key].details.title,
+                        description: res[key].details.subtitle ? res[key].details.subtitle : 'N/A',
+                        pages: res[key].details.number_of_pages ? res[key].details.number_of_pages : 'N/A',
+                        authors: authors.join(', ')
+                    };
+
+                    // Build a list item for each book
+                    ulString += `<li><strong>ISBN:</strong> ${book.isbn}</li>
+                                        <li><strong>Title:</strong> ${book.title}</li>
+                                        <li><strong>Description:</strong> ${book.description}</li>
+                                        <li><strong>Pages:</strong> ${book.pages}</li>
+                                        <li><strong>Authors:</strong> ${book.authors}</li>`;
+
+                    // Build a table row for each book
+                    tableString += `<tr>
+                                            <td><a href="#" class="isbn-link">${book.isbn}</a></td>
+                                            <td>${book.title}</td>
+                                            <td>${book.description}</td>
+                                            <td>${book.pages}</td>
+                                            <td>${book.authors}</td>
+                                        </tr>`;
+                }
+            }
+
+            // End the List
+            tableString += `</tbody></table>`;
+            ulString += `</ul>`;
+
+            // If table is requested, return the table string, otherwise return the list string
+            if (format === 'table') {
+                return tableString;
+            } else {
+                return ulString;
+            }
+        }
+
+        // addIsbnClickEvents function - adds the click event to the ISBN links
+        function addIsbnClickEvents() {
+            // Get all the ISBN links
+            let viewButtons = document.querySelectorAll('#bookTable tbody .isbn-link');
+            // Loop through the links and add the click event
+            for (let i = 0; i < viewButtons.length; i++) {
+                viewButtons[i].addEventListener('click', getBook);
+            }
+        }
+    </script>
+</body>
+
+</html>
